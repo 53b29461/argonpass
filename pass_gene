@@ -23,21 +23,18 @@ def f(i: int, s: str, n: int) -> str:
     if n < required_count:
         raise ValueError(f"文字数は最低でも {required_count} 文字以上にしてください")
 
-    # ハッシュ元
     seed_hash = hashlib.sha256(s.encode()).digest()
     seed_int = int.from_bytes(seed_hash, 'big')
     rng = random.Random(seed_int)
 
     full_pool = ''.join(required_sets.values())
 
-    # ハッシュベースでランダムソースを生成
     h = seed_hash
     rand_source = []
     while len(rand_source) < n * 2:
         rand_source += [full_pool[b % len(full_pool)] for b in h]
         h = hashlib.sha256(h).digest()
 
-    # 各カテゴリから1文字ずつ確保（固定順）
     password_chars = [
         required_sets[key][seed_hash[i] % len(required_sets[key])]
         for i, key in enumerate(required_sets)
@@ -46,12 +43,10 @@ def f(i: int, s: str, n: int) -> str:
     remain = n - len(password_chars)
     password_chars += rand_source[:remain]
 
-    # シャッフル
     rng.shuffle(password_chars)
 
     return ''.join(password_chars)
 
-# 標準入力から使えるように
 if __name__ == "__main__":
     try:
         mode = int(input("モード (0 = 記号なし, 1 = 記号あり): "))
