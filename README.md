@@ -69,6 +69,7 @@ F6uJbX8KzEjcNQoIgTLa (copied to clipboard)
 
 
 一部環境ではクリップボードへのコピーが行われない場合があります
+
 `pyperclip` は OS ごとのバックエンドを自動検出します
 
 | 環境          | 必要パッケージ                             | 備考                           |
