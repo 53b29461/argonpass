@@ -46,7 +46,7 @@ F6uJbX8KzEjcNQoIgTLa (copied to clipboard)
 | ---------------------------------------- | ------------------------------------------- |
 | **1. 一番シンプルな起動**                       | `python pwgen.py example.com`               |
 | **2. パスワード長を24文字にする**                        | `python pwgen.py reddit.com -s -l 24`       |
-| **3. クリップボードにコピーしない**                   | `python pwgen.py bank.jp --quiet`           |
+| **3. 画面に結果を表示しない**                   | `python pwgen.py bank.jp --quiet`           |
 | **4. より頑丈なパスワード（time\_cost 5・メモリ 64 MB）** | `python pwgen.py vault.local -t 5 -m 65536` |
 
 > 同じ **マスターキー** と **サイト識別子** を入力すれば、常に同じパスワードが得られます
