@@ -94,10 +94,10 @@ aB3$xY9#mN2kP8qR... (copied to clipboard)
 
 ## 実用的な運用例
 
-### SSH接続用パスワード
+### 重要アカウント用の超強力パスワード
 ```bash
-python3 pwgen.py "my-vps-server" -s -l 64
-# → 64文字の超強力パスワードでVPS接続
+python3 pwgen.py "my-bank-account" -s
+# → 銀行など重要サービス用の64文字超強力パスワード
 ```
 
 ### 複数デバイスでの同期運用
@@ -117,7 +117,7 @@ GitHub      | https://github.com/login    | github
 Amazon      | https://amazon.co.jp        | amazon-jp
 Netflix     | https://netflix.com         | netflix
 銀行        | https://bank.example.jp     | mybank
-VPS         | ssh user@192.168.1.100      | my-vps
+楽天        | https://rakuten.co.jp       | rakuten
 ```
 
 **🔐 パスワード生成（必要な時だけ）**
