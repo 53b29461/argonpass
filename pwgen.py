@@ -38,7 +38,12 @@ def derive_key(master: str, site: str,
                time_cost: int, mem_kb: int, parallel: int = 2,
                dklen: int = 64) -> bytes:
     """Argon2idで鍵導出 (戻り値: raw bytes)"""
-    return hash_secret_raw(master.encode(), site.encode(),
+    # 塩を最低8バイトに拡張
+    salt = site.encode()
+    while len(salt) < 8:
+        salt += b'\x00'
+    
+    return hash_secret_raw(master.encode(), salt,
                            time_cost=time_cost,
                            memory_cost=mem_kb,
                            parallelism=parallel,
@@ -92,9 +97,12 @@ def main() -> None:
     pw = sift_chars(b64.encode(), args.length, req_sets)
 
     if CLIP_OK:
-        pyperclip.copy(pw)
-        if not args.quiet:
-            print(pw, "(copied to clipboard)")
+        try:
+            pyperclip.copy(pw)
+            if not args.quiet:
+                print(pw, "(copied to clipboard)")
+        except:
+            print(pw)
     else:
         print(pw)
 
