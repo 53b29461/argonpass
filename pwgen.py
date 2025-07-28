@@ -43,12 +43,18 @@ def derive_key(master: str, site: str,
     while len(salt) < 8:
         salt += b'\x00'
     
-    return hash_secret_raw(master.encode(), salt,
+    print(f"🔐 パスワード生成中... (time_cost={time_cost}, memory={mem_kb}KB)")
+    print("⏳ 数分お待ちください...", end="", flush=True)
+    
+    result = hash_secret_raw(master.encode(), salt,
                            time_cost=time_cost,
                            memory_cost=mem_kb,
                            parallelism=parallel,
                            hash_len=dklen,
                            type=Type.ID)
+    
+    print(" ✅ 完了!")
+    return result
 
 def sift_chars(dk: bytes, length: int,
                required_sets: dict[str, str]) -> str:
@@ -71,13 +77,13 @@ def sift_chars(dk: bytes, length: int,
 def main() -> None:
     ap = argparse.ArgumentParser(add_help=False)
     ap.add_argument("site",           help="サイト識別子 (例: github.com)")
-    ap.add_argument("-l", "--length", type=int, default=20)
+    ap.add_argument("-l", "--length", type=int, default=64)
     ap.add_argument("-s", "--symbols", action="store_true",
                     help="記号必須モード (SYMBOLS から1文字)")
-    ap.add_argument("-t", type=int, default=3,
-                    help="Argon2 time_cost (デフォ 3)")
-    ap.add_argument("-m", type=int, default=32*1024,
-                    help="Argon2 memory_cost KB (デフォ 32768=32MB)")
+    ap.add_argument("-t", type=int, default=42,
+                    help="Argon2 time_cost (デフォ 42)")
+    ap.add_argument("-m", type=int, default=256*1024,
+                    help="Argon2 memory_cost KB (デフォ 262144=256MB)")
     ap.add_argument("-q", "--quiet", action="store_true",
                     help="標準出力を抑制 (クリップボードのみ)")
     if "-h" in sys.argv or "--help" in sys.argv:
