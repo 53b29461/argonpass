@@ -107,6 +107,33 @@ python3 pwgen.py "gmail" -s
 # → どのデバイスでも同じパスワードが生成される
 ```
 
+### 日常的なパスワード管理
+
+**📝 サイト一覧メモ（password_sites.txt）**
+```
+# サービス名 | ログインURL | サイト識別子
+Gmail       | https://gmail.com           | gmail
+GitHub      | https://github.com/login    | github  
+Amazon      | https://amazon.co.jp        | amazon-jp
+Netflix     | https://netflix.com         | netflix
+銀行        | https://bank.example.jp     | mybank
+VPS         | ssh user@192.168.1.100      | my-vps
+```
+
+**🔐 パスワード生成（必要な時だけ）**
+```bash
+# ログイン時にメモを見ながら生成
+python3 pwgen.py "gmail" -s
+python3 pwgen.py "github" -s  
+python3 pwgen.py "amazon-jp" -s
+```
+
+**💡 運用のコツ**
+- メモは**サイト識別子だけ**記録（パスワードは書かない）
+- 同じマスターキーで全サービス管理
+- ログイン時に毎回生成すれば記憶不要
+- メモが漏れても識別子だけなので安全
+
 ### セキュリティレベル別設定
 ```bash
 # 軽量（テスト用）
