@@ -1,6 +1,6 @@
-# pwgen.py – パスワード生成
+# pwgen.py – 強力なパスワード生成器
 
-固定文字列（マスターキー）と任意文字列（サービス名やURLなど）からパスワードを生成する
+固定文字列（マスターキー）と任意文字列（サービス名やURLなど）から強力なパスワードを生成する
 
 コアには **Argon2id**（メモリハードな KDF）を採用しています
 
@@ -9,33 +9,31 @@
 ## 特長
 
 * **オフライン完結**: ネットワークにもクラウドにも依存しない
-* **Argon2id**: 既定で *time\_cost 3*・*メモリ 32 MB*
+* **超強力なArgon2id**: 既定で *time_cost 42*・*メモリ 256 MB*（数分の計算時間）
+* **64文字デフォルト**: より強固なパスワード長
 * **記号必須スイッチ**: パスワードポリシーに合わせて簡単切替
+* **進行表示**: 重い計算中もプログレス表示で安心
 * **クリップボード自動コピー**（pyperclip）バックエンドが無い場合は標準出力へフォールバック
-* Python 3.8 以降、仮想環境でもグローバルでも動作
+* Python 3.8 以降、仮想環境でもグローバルでも動作
 
 ---
 
-## インストール手順
+## クイックスタート
 
 ```bash
-# 1) 仮想環境を作成（推奨）
-python3 -m venv .venv
-source .venv/bin/activate   # Windows は .venv\Scripts\Activate.ps1
+# 1) リポジトリをクローン
+git clone https://github.com/53b29461/pass_gene.git
+cd pass_gene
 
 # 2) 依存パッケージをインストール
-pip install --upgrade pip
 pip install argon2-cffi pyperclip
-```
 
----
-
-## 使い方（最短）
-
-```bash
-python pwgen.py github.com
-Master: ******** ********
-F6uJbX8KzEjcNQoIgTLa (copied to clipboard)
+# 3) 強力なパスワード生成（64文字・記号付き）
+python3 pwgen.py "your-service" -s
+Master: [覚えやすい秘密の文字列]
+🔐 パスワード生成中... (time_cost=42, memory=262144KB)
+⏳ 数分お待ちください... ✅ 完了!
+aB3$xY9#mN2kP8qR... (copied to clipboard)
 ```
 
 ---
@@ -44,10 +42,11 @@ F6uJbX8KzEjcNQoIgTLa (copied to clipboard)
 
 | 目的                                       | コマンド例                                       |
 | ---------------------------------------- | ------------------------------------------- |
-| **1. 一番シンプルな起動**                       | `python pwgen.py example.com`               |
-| **2. パスワード長を24文字にする**                        | `python pwgen.py reddit.com -s -l 24`       |
-| **3. 画面に結果を表示しない**                   | `python pwgen.py bank.jp --quiet`           |
-| **4. より頑丈なパスワード（time\_cost 5・メモリ 64 MB）** | `python pwgen.py vault.local -t 5 -m 65536` |
+| **1. 標準の強力パスワード（64文字・記号付き）**        | `python3 pwgen.py "github.com" -s`          |
+| **2. パスワード長を32文字にする**                | `python3 pwgen.py "reddit.com" -s -l 32`    |
+| **3. 画面に結果を表示しない**                   | `python3 pwgen.py "bank.jp" --quiet`        |
+| **4. 軽量版（短時間で生成）**                   | `python3 pwgen.py "test.local" -t 10 -m 32768` |
+| **5. 超強力版（10分級の計算時間）**              | `python3 pwgen.py "critical.app" -t 50 -m 1048576` |
 
 > 同じ **マスターキー** と **サイト識別子** を入力すれば、常に同じパスワードが得られます
 
@@ -56,17 +55,16 @@ F6uJbX8KzEjcNQoIgTLa (copied to clipboard)
 ## コマンドラインオプション
 
 ```text
--l, --length N      パスワード長を設定（既定 20）
--s, --symbols       記号を含める
+-l, --length N      パスワード長を設定（既定 64）
+-s, --symbols       記号を含める（推奨）
 -q, --quiet         画面に生成パスワードを表示しない
--t N                Argon2 time_cost（既定 3）
--m KB               Argon2 memory_cost（KB 単位、既定 32768 = 32 MB）
+-t N                Argon2 time_cost（既定 42、数分の計算時間）
+-m KB               Argon2 memory_cost（KB 単位、既定 262144 = 256 MB）
 ```
 
 ---
 
 ## クリップボードについて
-
 
 一部環境ではクリップボードへのコピーが行われない場合があります
 
@@ -84,10 +82,42 @@ F6uJbX8KzEjcNQoIgTLa (copied to clipboard)
 
 ## セキュリティ運用ヒント
 
-* 覚えやすく長めのマスターキーを推奨。
-* 公共 PC での使用は避け、自宅や業務端末でも画面覗き見に注意。
-* KDF パラメータは端末性能を見ながら `-t` と `-m` で重く調整可能。
-* マスターキーをソースや履歴に埋め込まないこと。
+* **マスターキー**: 覚えやすく他人に推測されない文字列を推奨
+* **公共PC使用**: ネットカフェ等では使用後にプログラムとファイルを完全削除
+* **パラメータ調整**: `-t` と `-m` で計算時間を調整可能（重いほど安全）
+* **記号必須**: `-s` オプションでパスワード強度が大幅向上
+* **履歴対策**: マスターキーをシェル履歴やソースコードに残さない
+* **デバイス別運用**: 各デバイスで同じマスター+サイト名で同一パスワード生成可能
+* **ブルートフォース耐性**: デフォルト設定で攻撃者に数年〜数十年の計算時間を強制
+
+---
+
+## 実用的な運用例
+
+### SSH接続用パスワード
+```bash
+python3 pwgen.py "my-vps-server" -s -l 64
+# → 64文字の超強力パスワードでVPS接続
+```
+
+### 複数デバイスでの同期運用
+```bash
+# 全デバイスで同じコマンド・同じマスターキー
+python3 pwgen.py "gmail" -s
+# → どのデバイスでも同じパスワードが生成される
+```
+
+### セキュリティレベル別設定
+```bash
+# 軽量（テスト用）
+python3 pwgen.py "test" -t 5 -m 16384
+
+# 標準（日常用）
+python3 pwgen.py "service" -s
+
+# 最強（重要アカウント用）
+python3 pwgen.py "bank" -s -t 50 -m 1048576
+```
 
 ---
 
