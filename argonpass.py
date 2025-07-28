@@ -137,7 +137,16 @@ def main() -> None:
     if args.symbols:
         req_sets["symbol"] = SYMBOLS
 
-    master = getpass.getpass("Master: ")
+    # マスターパスワードの確認入力
+    while True:
+        master = getpass.getpass("Master: ")
+        master_confirm = getpass.getpass("Confirm Master: ")
+        
+        if master == master_confirm:
+            break
+        else:
+            print("❌ パスワードが一致しません。再入力してください。")
+    
     dk = derive_key(master, args.site, time_cost, mem_cost)
     # urlsafe base64 → = 削除 → bytes→文字列化
     b64 = base64.urlsafe_b64encode(dk).decode().replace("=", "")

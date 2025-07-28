@@ -34,6 +34,7 @@ python3 argonpass.py "your-service" -s
 ⏱️  Estimated wait: ~2～5分
 
 Master: [覚えやすい秘密の文字列]
+Confirm Master: [同じ文字列を再入力]
 🔐 パスワード生成中... ✅ 完了!
 📋 Generated with: t=42, m=256MB (keep these settings for reproduction)
 
@@ -96,7 +97,7 @@ aB3$xY9#mN2kP8qR... (copied to clipboard)
 
 ## セキュリティ運用ヒント
 
-* **マスターキー**: 覚えやすく他人に推測されない文字列を推奨
+* **マスターキー**: 覚えやすく他人に推測されない文字列を推奨（確認入力でタイプミス防止）
 * **公共PC使用**: ネットカフェ等では使用後にプログラムとファイルを完全削除
 * **パラメータ調整**: `-t` と `-m` で計算時間を調整可能（重いほど安全）
 * **記号必須**: `-s` オプションでパスワード強度が大幅向上
@@ -170,6 +171,7 @@ $ python3 argonpass.py "my-bank" --mode paranoid -s
 ⏱️  Estimated wait: ~2～10分
 
 Master: ********
+Confirm Master: ********
 🔐 パスワード生成中... ✅ 完了!
 📋 Generated with: t=50, m=512MB (keep these settings for reproduction)
 
