@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-pwgen.py  -  Deterministic password generator (Argon2id)
+argonpass.py  -  Deterministic password generator (Argon2id)
 
 使い方:
-  $ python pwgen.py example.com
+  $ python3 argonpass.py example.com
   Master: ******
   (クリップボードにコピー＋標準出力にも表示)
 

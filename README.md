@@ -1,4 +1,4 @@
-# pwgen.py – 強力なパスワード生成器
+# argonpass – 強力なパスワード生成器
 
 固定文字列（マスターキー）と任意文字列（サービス名やURLなど）から強力なパスワードを生成する
 
@@ -29,7 +29,7 @@ cd pass_gene
 pip install argon2-cffi pyperclip
 
 # 3) 強力なパスワード生成（64文字・記号付き）
-python3 pwgen.py "your-service" -s
+python3 argonpass.py "your-service" -s
 Master: [覚えやすい秘密の文字列]
 🔐 パスワード生成中... (time_cost=42, memory=262144KB)
 ⏳ 数分お待ちください... ✅ 完了!
@@ -42,11 +42,11 @@ aB3$xY9#mN2kP8qR... (copied to clipboard)
 
 | 目的                                       | コマンド例                                       |
 | ---------------------------------------- | ------------------------------------------- |
-| **1. 標準の強力パスワード（64文字・記号付き）**        | `python3 pwgen.py "github.com" -s`          |
-| **2. パスワード長を32文字にする**                | `python3 pwgen.py "reddit.com" -s -l 32`    |
-| **3. 画面に結果を表示しない**                   | `python3 pwgen.py "bank.jp" --quiet`        |
-| **4. 軽量版（短時間で生成）**                   | `python3 pwgen.py "test.local" -t 10 -m 32768` |
-| **5. 超強力版（10分級の計算時間）**              | `python3 pwgen.py "critical.app" -t 50 -m 1048576` |
+| **1. 標準の強力パスワード（64文字・記号付き）**        | `python3 argonpass.py "github.com" -s`          |
+| **2. パスワード長を32文字にする**                | `python3 argonpass.py "reddit.com" -s -l 32`    |
+| **3. 画面に結果を表示しない**                   | `python3 argonpass.py "bank.jp" --quiet`        |
+| **4. 軽量版（短時間で生成）**                   | `python3 argonpass.py "test.local" -t 10 -m 32768` |
+| **5. 超強力版（10分級の計算時間）**              | `python3 argonpass.py "critical.app" -t 50 -m 1048576` |
 
 > 同じ **マスターキー** と **サイト識別子** を入力すれば、常に同じパスワードが得られます
 
@@ -96,14 +96,14 @@ aB3$xY9#mN2kP8qR... (copied to clipboard)
 
 ### 重要アカウント用の超強力パスワード
 ```bash
-python3 pwgen.py "my-bank-account" -s
+python3 argonpass.py "my-bank-account" -s
 # → 銀行など重要サービス用の64文字超強力パスワード
 ```
 
 ### 複数デバイスでの同期運用
 ```bash
 # 全デバイスで同じコマンド・同じマスターキー
-python3 pwgen.py "gmail" -s
+python3 argonpass.py "gmail" -s
 # → どのデバイスでも同じパスワードが生成される
 ```
 
@@ -123,9 +123,9 @@ Netflix     | https://netflix.com         | netflix
 **🔐 パスワード生成（必要な時だけ）**
 ```bash
 # ログイン時にメモを見ながら生成
-python3 pwgen.py "gmail" -s
-python3 pwgen.py "github" -s  
-python3 pwgen.py "amazon-jp" -s
+python3 argonpass.py "gmail" -s
+python3 argonpass.py "github" -s  
+python3 argonpass.py "amazon-jp" -s
 ```
 
 **💡 運用のコツ**
@@ -137,13 +137,13 @@ python3 pwgen.py "amazon-jp" -s
 ### セキュリティレベル別設定
 ```bash
 # 軽量（テスト用）
-python3 pwgen.py "test" -t 5 -m 16384
+python3 argonpass.py "test" -t 5 -m 16384
 
 # 標準（日常用）
-python3 pwgen.py "service" -s
+python3 argonpass.py "service" -s
 
 # 最強（重要アカウント用）
-python3 pwgen.py "bank" -s -t 50 -m 1048576
+python3 argonpass.py "bank" -s -t 50 -m 1048576
 ```
 
 ---
