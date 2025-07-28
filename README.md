@@ -22,8 +22,8 @@
 
 ```bash
 # 1) リポジトリをクローン
-git clone https://github.com/53b29461/pass_gene.git
-cd pass_gene
+git clone https://github.com/53b29461/argonpass.git
+cd argonpass
 
 # 2) 依存パッケージをインストール
 pip install argon2-cffi pyperclip
