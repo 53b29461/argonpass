@@ -30,9 +30,13 @@ pip install argon2-cffi pyperclip
 
 # 3) 強力なパスワード生成（64文字・記号付き）
 python3 argonpass.py "your-service" -s
+🔒 Security Profile: Paranoid (time_cost=42, memory=256MB)
+⏱️  Estimated wait: ~2～5分
+
 Master: [覚えやすい秘密の文字列]
-🔐 パスワード生成中... (time_cost=42, memory=262144KB)
-⏳ 数分お待ちください... ✅ 完了!
+🔐 パスワード生成中... ✅ 完了!
+📋 Generated with: t=42, m=256MB (keep these settings for reproduction)
+
 aB3$xY9#mN2kP8qR... (copied to clipboard)
 ```
 
@@ -43,10 +47,10 @@ aB3$xY9#mN2kP8qR... (copied to clipboard)
 | 目的                                       | コマンド例                                       |
 | ---------------------------------------- | ------------------------------------------- |
 | **1. 標準の強力パスワード（64文字・記号付き）**        | `python3 argonpass.py "github.com" -s`          |
-| **2. パスワード長を32文字にする**                | `python3 argonpass.py "reddit.com" -s -l 32`    |
-| **3. 画面に結果を表示しない**                   | `python3 argonpass.py "bank.jp" --quiet`        |
-| **4. 軽量版（短時間で生成）**                   | `python3 argonpass.py "test.local" -t 10 -m 32768` |
-| **5. 超強力版（10分級の計算時間）**              | `python3 argonpass.py "critical.app" -t 50 -m 1048576` |
+| **2. 高速生成モード（30秒～1分）**                | `python3 argonpass.py "test.local" --mode fast -s`    |
+| **3. バランスモード（1～2分）**                   | `python3 argonpass.py "work.com" --mode balanced -s`        |
+| **4. 超強力モード（10分級）**                   | `python3 argonpass.py "bank.jp" --mode paranoid -s` |
+| **5. カスタム設定**              | `python3 argonpass.py "custom" -t 30 -m 400000 -s` |
 
 > 同じ **マスターキー** と **サイト識別子** を入力すれば、常に同じパスワードが得られます
 
@@ -57,10 +61,20 @@ aB3$xY9#mN2kP8qR... (copied to clipboard)
 ```text
 -l, --length N      パスワード長を設定（既定 64）
 -s, --symbols       記号を含める（推奨）
+--mode MODE         セキュリティモード：fast(30秒), balanced(1-2分), paranoid(2-5分)
 -q, --quiet         画面に生成パスワードを表示しない
--t N                Argon2 time_cost（既定 42、数分の計算時間）
--m KB               Argon2 memory_cost（KB 単位、既定 262144 = 256 MB）
+-t N                Argon2 time_cost（既定 42、--modeで上書き可）
+-m KB               Argon2 memory_cost（KB単位、既定 262144=256MB、--modeで上書き可）
 ```
+
+### セキュリティモード詳細
+
+| モード      | time_cost | memory | 推定時間  | 用途           |
+| ---------- | --------- | ------ | -------- | -------------- |
+| fast       | 10        | 64MB   | 30秒～1分 | テスト・軽量用途 |
+| balanced   | 25        | 128MB  | 1～2分   | 日常的な用途    |
+| paranoid   | 50        | 512MB  | 2～10分  | 最重要アカウント |
+| デフォルト   | 42        | 256MB  | 2～5分   | 推奨設定       |
 
 ---
 
@@ -136,15 +150,36 @@ python3 argonpass.py "amazon-jp" -s
 
 ### セキュリティレベル別設定
 ```bash
-# 軽量（テスト用）
-python3 argonpass.py "test" -t 5 -m 16384
+# 高速（テスト・開発用）
+python3 argonpass.py "test" --mode fast -s
 
-# 標準（日常用）
-python3 argonpass.py "service" -s
+# バランス（日常的なサービス）
+python3 argonpass.py "service" --mode balanced -s
 
-# 最強（重要アカウント用）
-python3 argonpass.py "bank" -s -t 50 -m 1048576
+# 最強（銀行・重要アカウント）
+python3 argonpass.py "bank" --mode paranoid -s
+
+# デフォルト（推奨設定）
+python3 argonpass.py "gmail" -s
 ```
+
+### 実行例と設定記録
+```bash
+$ python3 argonpass.py "my-bank" --mode paranoid -s
+🔒 Security Profile: Paranoid (time_cost=50, memory=512MB)
+⏱️  Estimated wait: ~2～10分
+
+Master: ********
+🔐 パスワード生成中... ✅ 完了!
+📋 Generated with: t=50, m=512MB (keep these settings for reproduction)
+
+aB3$xY9#mN2kP8qR7wX4... (copied to clipboard)
+```
+
+**💡 再現時のメモ:**
+- サイト識別子: `my-bank` 
+- 設定: `t=50, m=512MB`
+- 別デバイスでも同じ設定で同一パスワード生成可能
 
 ---
 
